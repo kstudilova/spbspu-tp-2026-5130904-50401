@@ -38,3 +38,26 @@ void studilova::line(std::istream& in, std::ostream&, Context& ctx)
   }
   it->second->lines.push_back(text);
 }
+
+void studilova::show(std::istream& in, std::ostream& out, Context& ctx)
+{
+  std::string name;
+  in >> name;
+
+  if (!in)
+  {
+    throw std::logic_error("Invalid");
+  }
+
+  auto it = ctx.notes.find(name);
+  if (it == ctx.notes.end())
+  {
+    throw std::logic_error("Invalid");
+  }
+
+  const auto& lines = it->second->lines;
+  for (size_t i = 0; i < lines.size(); ++i)
+  {
+    out << lines[i] << "\n";
+  }
+}
