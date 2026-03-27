@@ -61,3 +61,21 @@ void studilova::show(std::istream& in, std::ostream& out, Context& ctx)
     out << lines[i] << "\n";
   }
 }
+
+void studilova::drop(std::istream& in, std::ostream& out, Context& ctx)
+{
+  std::string name;
+  in >> name;
+
+  if (!in)
+  {
+    throw std::logic_error("Invalid");
+  }
+
+  auto it = ctx.notes.find(name);
+  if (it == ctx.notes.end())
+  {
+    throw std::logic_error("Invalid");
+  }
+  ctx.notes.erase(it);
+}
