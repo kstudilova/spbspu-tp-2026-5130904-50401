@@ -153,3 +153,32 @@ void studilova::halt(std::istream& in, std::ostream& out, Context& ctx)
     throw std::logic_error("Invalid");
   }
 }
+
+void studilova::mind(std::istream& in, std::ostream& out, Context& ctx)
+{
+  std::string name;
+  in >> name;
+
+  if (!in)
+  {
+    throw std::logic_error("Invalid");
+  }
+
+  auto it = ctx.notes.find(name);
+  if(it == ctx.notes.end())
+  {
+    throw std::logic_error("Invalid");
+  }
+
+  const auto& links = it->second->links;
+
+  for (const auto& w : links)
+  {
+    auto s = w.lock();
+
+    if (s)
+    {
+      out << s->name << "\n";
+    }
+  }
+}
