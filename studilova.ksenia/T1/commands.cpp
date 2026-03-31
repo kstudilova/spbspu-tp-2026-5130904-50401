@@ -100,14 +100,13 @@ void studilova::link(std::istream& in, std::ostream& out, Context& ctx)
 
   auto& links = itFrom->second->links;
 
-  for (const auto& w : links)
+  for (size_t i = 0; i < links.size(); ++i)
   {
-    if (auto s = w.lock())
+    auto s = links[i].lock();
+
+    if (s && s->name == to)
     {
-      if (s->name == to)
-      {
-        throw std::logic_error("Duplicate");
-      }
+      throw std::logic_error("Duplicate");
     }
   }
   links.push_back(itTo->second);
@@ -172,9 +171,9 @@ void studilova::mind(std::istream& in, std::ostream& out, Context& ctx)
 
   const auto& links = it->second->links;
 
-  for (const auto& w : links)
+  for (size_t i = 0; i < links.size(); ++i)
   {
-    auto s = w.lock();
+    auto s = links[i].lock();
 
     if (s)
     {
@@ -199,11 +198,12 @@ void studilova::expired(std::istream& in, std::ostream& out, Context& ctx)
     throw std::logic_error("Invalid");
   }
 
+  auto& links = it->second->links;
   int count = 0;
 
-  for(const auto& w : it->second->links)
+  for(size_t i = 0; i < links.size(); ++i)
   {
-    if (w.expired())
+    if (links[i].expired())
     {
       ++count;
     }
