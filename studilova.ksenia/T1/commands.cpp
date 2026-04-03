@@ -56,6 +56,12 @@ void studilova::show(std::istream& in, std::ostream& out, Context& ctx)
   }
 
   const auto& lines = it->second->lines;
+
+  if (lines.empty())
+  {
+    out << "\n";
+  }
+
   for (size_t i = 0; i < lines.size(); ++i)
   {
     out << lines[i] << "\n";
@@ -170,6 +176,7 @@ void studilova::mind(std::istream& in, std::ostream& out, Context& ctx)
   }
 
   const auto& links = it->second->links;
+  bool printed = false;
 
   for (size_t i = 0; i < links.size(); ++i)
   {
@@ -178,7 +185,13 @@ void studilova::mind(std::istream& in, std::ostream& out, Context& ctx)
     if (s)
     {
       out << s->name << "\n";
+      printed = true;
     }
+  }
+
+  if (!printed)
+  {
+    out << "\n";
   }
 }
 
