@@ -44,6 +44,56 @@ std::istream& studilova::operator>>(std::istream& in, LabelIO&& dest)
   return in;
 }
 
+std::istream& studilova::operator>>(std::istream& in, ULLBinIO&& dest)
+{
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
+    return in;
+  }
+
+  char zero = '0';
+  char b = '0';
+  in >> zero >> b;
+
+  if (!in)
+  {
+    return in;
+  }
+
+  if (zero != '0' || (b != 'b' && b != 'B'))
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+
+  unsigned long long result = 0;
+  bool hasDigits = false;
+
+  while (in)
+  {
+    char c = in.peek();
+    if (c != '0' && c != '1')
+    {
+      break;
+    }
+    in.get(c);
+
+    result *= 2;
+    result += (c - '0');
+    hasDigits = true;
+  }
+
+  if (!hasDigits)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+
+  dest.ref = result;
+  return in;
+}
+
 std::istream& studilova::operator>>(std::istream& in, ULLHexIO&& dest)
 {
   std::istream::sentry sentry(in);
