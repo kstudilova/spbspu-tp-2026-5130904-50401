@@ -44,6 +44,33 @@ std::istream& studilova::operator>>(std::istream& in, LabelIO&& dest)
   return in;
 }
 
+std::istream& studilova::operator>>(std::istream& in, ULLHexIO&& dest)
+{
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
+    return in;
+  }
+
+  char zero = '0';
+  char x = '0';
+  in >> zero >> x;
+
+  if (!in)
+  {
+    return in;
+  }
+
+  if (zero != '0' || (x != 'x' && x != 'X'))
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+
+  in >> std::hex >> dest.ref;
+  return in;
+}
+
 bool studilova::operator<(const DataStruct& lhs, const DataStruct& rhs)
 {
   if (lhs.key1 != rhs.key1)
