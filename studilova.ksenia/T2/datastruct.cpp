@@ -1,5 +1,21 @@
 #include "datastruct.hpp"
 
+studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
+  s_(s),
+  width_(s.width()),
+  precision_(s.precision()),
+  flags_(s.flags()),
+  fill_(s.fill())
+{}
+
+studilova::IOGuard::~IOGuard()
+{
+  s_.width(width_);
+  s_.precision(precision_);
+  s_.flags(flags_);
+  s_.fill(fill_);
+}
+
 std::istream& studilova::operator>>(std::istream& in, DelimiterIO&& dest)
 {
   std::istream::sentry sentry(in);
