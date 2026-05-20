@@ -28,9 +28,21 @@ namespace studilova
     std::string exp;
   };
 
+  struct ULLBinIO
+  {
+    unsigned long long& ref;
+  };
+
+  struct ULLHexIO
+  {
+    unsigned long long& ref;
+  };
+
   std::istream& operator>>(std::istream& in, DelimiterIO&& dest);
   std::istream& operator>>(std::istream& in, StringIO&& dest);
   std::istream& operator>>(std::istream& in, LabelIO&& dest);
+  std::istream& operator>>(std::istream& in, ULLBinIO&& dest);
+  std::istream& operator>>(std::istream& in, ULLHexIO&& dest);
 
   bool operator<(const DataStruct& lhs, const DataStruct& rhs);
 }
