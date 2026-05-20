@@ -1,4 +1,29 @@
+#include <algorithm>
+#include <iomanip>
+
 #include "datastruct.hpp"
+
+namespace
+{
+  std::string toBinary(unsigned long long value)
+  {
+    if (value == 0)
+    {
+      return "0";
+    }
+
+    std::string result;
+
+    while (value != 0)
+    {
+      result += static_cast< char >('0' + value % 2);
+      value /= 2;
+    }
+
+    std::reverse(result.begin(), result.end());
+    return result;
+  }
+}
 
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
   s_(s),
@@ -41,7 +66,7 @@ std::istream& studilova::operator>>(std::istream& in, StringIO&& dest)
   {
     return in;
   }
-  return std::getline( in >> DelimiterIO{ '"' }, dest.ref, '"');
+  return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
 }
 
 std::istream& studilova::operator>>(std::istream& in, LabelIO&& dest)
@@ -135,6 +160,19 @@ std::istream& studilova::operator>>(std::istream& in, ULLHexIO&& dest)
 
   in >> std::hex >> dest.ref;
   return in;
+}
+
+std::ostream& studilova::operator<<(std::ostream& out, const DataStruct& dest)
+{
+  std::ostream::sentry sentry(out);
+  if (!sentry)
+  {
+    return out;
+  }
+
+  IOGuard guard(out);
+  out << "(:key1 0b";
+
 }
 
 bool studilova::operator<(const DataStruct& lhs, const DataStruct& rhs)
