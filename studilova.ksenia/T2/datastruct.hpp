@@ -38,6 +38,20 @@ namespace studilova
     unsigned long long& ref;
   };
 
+  class IOGuard
+  {
+    public:
+      explicit IOGuard(std::basic_ios< char >& s);
+      ~IOGuard();
+
+    private:
+      std::basic_ios< char >& s_;
+      std::streamsize width_;
+      std::streamsize precision_;
+      std::basic_ios< char >::fmtflags flags_;
+      char fill_;
+  };
+
   std::istream& operator>>(std::istream& in, DelimiterIO&& dest);
   std::istream& operator>>(std::istream& in, StringIO&& dest);
   std::istream& operator>>(std::istream& in, LabelIO&& dest);
