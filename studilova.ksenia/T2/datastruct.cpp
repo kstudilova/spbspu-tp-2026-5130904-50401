@@ -171,8 +171,12 @@ std::ostream& studilova::operator<<(std::ostream& out, const DataStruct& dest)
   }
 
   IOGuard guard(out);
-  out << "(:key1 0b";
 
+  out << "(:key1 0b" << toBinary(dest.key1);
+  out << ":key2 0x" << std::hex << std::uppercase << dest.key2;
+  out << ":key3 \"" << dest.key3 << "\":)";
+
+  return out;
 }
 
 bool studilova::operator<(const DataStruct& lhs, const DataStruct& rhs)
