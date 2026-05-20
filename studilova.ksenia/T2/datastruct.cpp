@@ -23,6 +23,18 @@ namespace
     std::reverse(result.begin(), result.end());
     return result;
   }
+
+  bool markField(std::istream& in, bool& hasKey)
+  {
+    if (hasKey)
+    {
+      in.setstate(std::ios::failbit);
+      return false;
+    }
+
+    hasKey = true;
+    return true;
+  }
 }
 
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
@@ -171,44 +183,40 @@ std::istream& studilova::operator>>(std::istream& in, DataStruct& dest)
   bool hasKey3 = false;
 
   in >> DelimiterIO{ '(' } >> DelimiterIO{ ':' };
+  if (!in)
+  {
+    return in;
+  }
 
   while (in && in.peek() != ')')
   {
     std::string label;
     in >> LabelIO{ label };
+    if (!in)
+    {
+      break;
+    }
 
     if (label == "key1")
     {
-      if (hasKey1)
+      if (markField(in, hasKey1))
       {
-        in.setstate(std::ios::failbit);
-        break;
+        in >> ULLBinIO{ input.key1 };
       }
-
-      in >> ULLBinIO{ input.key1 };
-      hasKey1 = true;
     }
     else if (label == "key2")
     {
-      if (hasKey2)
+      if (markField(in, hasKey2))
       {
-        in.setstate(std::ios::failbit);
-        break;
+        in >> ULLHexIO{ input.key2 };
       }
-
-      in >> ULLHexIO{ input.key2 };
-      hasKey2 = true;
     }
     else if (label == "key3")
     {
-      if (hasKey3)
+      if (markField(in, hasKey3))
       {
-        in.setstate(std::ios::failbit);
-        break;
+        in >> StringIO{ input.key3 };
       }
-
-      in >> StringIO{ input.key3 };
-      hasKey3 = true;
     } else {
       in.setstate(std::ios::failbit);
       break;
