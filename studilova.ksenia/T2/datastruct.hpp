@@ -25,7 +25,7 @@ namespace studilova
 
   struct LabelIO
   {
-    std::string exp;
+    std::string& ref;
   };
 
   struct ULLBinIO

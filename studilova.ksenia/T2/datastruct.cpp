@@ -77,12 +77,7 @@ std::istream& studilova::operator>>(std::istream& in, LabelIO&& dest)
     return in;
   }
 
-  std::string data = "";
-  if ((in >> StringIO{ data }) && (data != dest.exp))
-  {
-    in.setstate(std::ios::failbit);
-  }
-  return in;
+  return in >> dest.ref;
 }
 
 std::istream& studilova::operator>>(std::istream& in, ULLBinIO&& dest)
