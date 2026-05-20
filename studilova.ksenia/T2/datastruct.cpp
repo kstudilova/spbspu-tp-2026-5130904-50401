@@ -150,6 +150,8 @@ std::istream& studilova::operator>>(std::istream& in, ULLHexIO&& dest)
     return in;
   }
 
+  IOGuard guard(in);
+
   char zero = '0';
   char x = '0';
   in >> zero >> x;
