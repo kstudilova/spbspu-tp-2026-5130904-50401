@@ -157,6 +157,77 @@ std::istream& studilova::operator>>(std::istream& in, ULLHexIO&& dest)
   return in;
 }
 
+std::istream& studilova::operator>>(std::istream& in, DataStruct& dest)
+{
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
+    return in;
+  }
+
+  DataStruct input{};
+  bool hasKey1 = false;
+  bool hasKey2 = false;
+  bool hasKey3 = false;
+
+  in >> DelimiterIO{ '(' } >> DelimiterIO{ ':' };
+
+  while (in && in.peek() != ')')
+  {
+    std::string label;
+    in >> LabelIO{ label };
+
+    if (label == "key1")
+    {
+      if (hasKey1)
+      {
+        in.setstate(std::ios::failbit);
+        break;
+      }
+
+      in >> ULLBinIO{ input.key1 };
+      hasKey1 = true;
+    }
+    else if (label == "key2")
+    {
+      if (hasKey2)
+      {
+        in.setstate(std::ios::failbit);
+        break;
+      }
+
+      in >> ULLHexIO{ input.key2 };
+      hasKey2 = true;
+    }
+    else if (label == "key3")
+    {
+      if (hasKey3)
+      {
+        in.setstate(std::ios::failbit);
+        break;
+      }
+
+      in >> StringIO{ input.key3 };
+      hasKey3 = true;
+    } else {
+      in.setstate(std::ios::failbit);
+      break;
+    }
+
+    in >> DelimiterIO{ ':' };
+  }
+
+  in >> DelimiterIO{ ')' };
+
+  if (in && hasKey1 && hasKey2 && hasKey3)
+  {
+    dest = input;
+  } else {
+    in.setstate(std::ios::failbit);
+  }
+  return in;
+}
+
 std::ostream& studilova::operator<<(std::ostream& out, const DataStruct& dest)
 {
   std::ostream::sentry sentry(out);
