@@ -6,7 +6,8 @@
 
 #include "polygon.hpp"
 
-namespace stuilova{
+namespace studilova
+{
   struct Command
   {
     static const std::vector< studilova::Polygon >* polygons;
