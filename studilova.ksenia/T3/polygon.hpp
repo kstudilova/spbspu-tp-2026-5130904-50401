@@ -57,6 +57,7 @@ namespace studilova
   bool operator==(const Point& lhs, const Point& rhs);
 
   void readPoints(std::istream& in, std::vector< Point >& points, size_t count);
+  void readData(std::istream& in, std::vector< Polygon >& polygons);
 
   Triangle makeTriangle(const std::vector< Point >& points, size_t index);
   double getTriangleArea(const Triangle& triangle);

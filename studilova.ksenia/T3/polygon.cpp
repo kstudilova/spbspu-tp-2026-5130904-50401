@@ -96,11 +96,6 @@ std::istream& studilova::operator>>(std::istream& in, Point& dest)
   return in;
 }
 
-bool studilova::operator==(const Point& lhs, const Point& rhs)
-{
-  return lhs.x == rhs.x && lhs.y == rhs.y;
-}
-
 void studilova::readPoints(std::istream& in, std::vector< studilova::Point >& points, size_t count)
 {
   if (count == 0)
@@ -146,6 +141,37 @@ std::istream& studilova::operator>>(std::istream& in, Polygon& dest)
     in.setstate(std::ios::failbit);
   }
   return in;
+}
+
+bool studilova::operator==(const Point& lhs, const Point& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+void studilova::readData(std::istream& in, std::vector< Polygon >& polygons)
+{
+  if (in.eof())
+  {
+    return;
+  }
+
+  Polygon polygon{};
+  if (in >> polygon)
+  {
+    polygons.push_back(polygon);
+    readData(in, polygons);
+    return;
+  }
+
+  if (in.eof())
+  {
+    return;
+  }
+
+  in.clear();
+  in.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+
+  readData(in, polygons);
 }
 
 studilova::Triangle studilova::makeTriangle(const std::vector< studilova::Point >& points, size_t index)
