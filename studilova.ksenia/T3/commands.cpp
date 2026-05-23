@@ -64,3 +64,35 @@ void studilova::area(std::istream& in, std::ostream& out, const std::vector< Pol
 
   out << std::fixed << std::setprecision(1) << result << '\n';
 }
+
+void studilova::count(std::istream& in, std::ostream& out, const std::vector< studilova::Polygon >& polygons)
+{
+  std::string arg;
+  if (!(in >> arg))
+  {
+    throw std::invalid_argument("invalid command");
+  }
+
+  size_t result = 0;
+  if (arg == "EVEN")
+  {
+    result = std::count_if(polygons.begin(), polygons.end(), hasEvenVertexes);
+  }
+  else if (arg == "ODD")
+  {
+    result = std::count_if(polygons.begin(), polygons.end(), hasOddVertexes);
+  }
+  else if (isNumber(arg))
+  {
+    size_t count = std::stoull(arg);
+    if (count < 3)
+    {
+      throw std::invalid_argument("invalid command");
+    }
+    result = std::count_if(polygons.begin(), polygons.end(), std::bind(hasNVertexes, std::placeholders::_1, count));
+  } else {
+    throw std::invalid_argument("invalid command");
+  }
+
+  out << result << '\n';
+}
