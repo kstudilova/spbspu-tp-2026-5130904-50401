@@ -14,6 +14,27 @@ namespace
   {
     return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
   }
+
+  void checkLineEnd(std::istream& in)
+  {
+    int c = in.peek();
+    if (!in)
+    {
+      return;
+    }
+
+    if (c == ' ' || c == '\t' || c == '\r')
+    {
+      in.get();
+      checkLineEnd(in);
+      return;
+    }
+
+    if (c != '\n' && c != std::char_traits< char >::eof())
+    {
+      throw std::invalid_argument("invalid command");
+    }
+  }
 }
 
 void studilova::area(std::istream& in, std::ostream& out, const std::vector< Polygon >& polygons)
@@ -160,6 +181,8 @@ void studilova::perms(std::istream& in, std::ostream& out, const std::vector< Po
     throw std::invalid_argument("invalid command");
   }
 
+  checkLineEnd(in);
+
   auto predicate = std::bind(isPermutation, std::placeholders::_1, std::cref(ref));
   size_t result = std::count_if(polygons.begin(), polygons.end(), predicate);
 
@@ -173,6 +196,8 @@ void studilova::intersections(std::istream& in, std::ostream& out, const std::ve
   {
     throw std::invalid_argument("invalid command");
   }
+
+  checkLineEnd(in);
 
   auto predicate = std::bind(polygonsIntersect, std::placeholders::_1, std::cref(ref));
   size_t result = std::count_if(polygons.begin(), polygons.end(), predicate);
