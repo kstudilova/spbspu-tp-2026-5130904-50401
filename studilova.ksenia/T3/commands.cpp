@@ -165,3 +165,17 @@ void studilova::perms(std::istream& in, std::ostream& out, const std::vector< Po
 
   out << result << '\n';
 }
+
+void studilova::intersections(std::istream& in, std::ostream& out, const std::vector< Polygon >& polygons)
+{
+  Polygon ref{};
+  if (!(in >> ref))
+  {
+    throw std::invalid_argument("invalid command");
+  }
+
+  auto predicate = std::bind(polygonsIntersect, std::placeholders::_1, std::cref(ref));
+  size_t result = std::count_if(polygons.begin(), polygons.end(), predicate);
+
+  out << result << '\n';
+}
