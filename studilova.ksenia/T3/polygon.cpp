@@ -32,6 +32,17 @@ namespace
       isBetween(segment.first.x, point.x, segment.second.x) &&
       isBetween(segment.first.y, point.y, segment.second.y);
   }
+
+  bool hasIntersectionWithSegment(const studilova::Segment& segment, const std::vector< studilova::Segment >& segments)
+  {
+    return std::any_of(segments.begin(), segments.end(),
+      std::bind(studilova::segmentsIntersect, std::cref(segment), std::placeholders::_1));
+  }
+
+  bool hasIntersections(const std::vector< studilova::Segment >& lhs, const std::vector< studilova::Segment >& rhs)
+  {
+    return std::any_of(lhs.begin(), lhs.end(), std::bind(hasIntersectionWithSegment, std::placeholders::_1, std::cref(rhs)));
+  }
 }
 
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
@@ -211,6 +222,12 @@ bool studilova::isPermutation(const Polygon& polygon, const Polygon& ref)
 studilova::Segment studilova::makeSegment(const Point& first, const Point& second)
 {
   return Segment{ first, second };
+}
+
+studilova::Segment studilova::makeSegmentByIndex(const Polygon& polygon, size_t index)
+{
+  size_t next = (index + 1) % polygon.points.size();
+  return makeSegment(polygon.points[index], polygon.points[next]);
 }
 
 bool studilova::segmentsIntersect(const Segment& lhs, const Segment& rhs)

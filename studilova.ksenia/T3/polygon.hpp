@@ -72,7 +72,9 @@ namespace studilova
   bool isPermutation(const Polygon& polygon, const Polygon& ref);
 
   Segment makeSegment(const Point& first, const Point& second);
+  Segment makeSegmentByIndex(const Polygon& polygon, size_t index);
   bool segmentsIntersect(const Segment& lhs, const Segment& rhs);
+  bool polygonsIntersect(const Polygon& lhs, const Polygon& rhs);
 }
 
 #endif
