@@ -43,6 +43,28 @@ namespace
   {
     return std::any_of(lhs.begin(), lhs.end(), std::bind(hasIntersectionWithSegment, std::placeholders::_1, std::cref(rhs)));
   }
+
+  bool isPointInsidePolygon(const studilova::Point& point, const studilova::Polygon& polygon)
+  {
+    studilova::Segment ray{ point, studilova::Point{ 1000000000, point.y + 1 } };
+
+    std::vector< size_t > indexes(polygon.points.size());
+    std::iota(indexes.begin(), indexes.end(), 0);
+
+    std::vector< studilova::Segment > segments(indexes.size());
+    std::transform(indexes.begin(), indexes.end(), segments.begin(),
+      std::bind(studilova::makeSegmentByIndex, std::cref(polygon), std::placeholders::_1));
+
+    size_t intersections = std::count_if(segments.begin(), segments.end(),
+      std::bind(studilova::segmentsIntersect, std::cref(ray), std::placeholders::_1));
+
+    return intersections % 2 == 1;
+  }
+
+  bool polygonInsidePolygon(const studilova::Polygon& lhs, const studilova::Polygon& rhs)
+  {
+    return isPointInsidePolygon(lhs.points.front(), rhs);
+  }
 }
 
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
@@ -288,5 +310,5 @@ bool studilova::polygonsIntersect(const Polygon& lhs, const Polygon& rhs)
   std::transform(rhsIndexes.begin(), rhsIndexes.end(), rhsSegments.begin(),
     std::bind(makeSegmentByIndex, std::cref(rhs), std::placeholders::_1));
 
-  return hasIntersections(lhsSegments, rhsSegments);
+  return hasIntersections(lhsSegments, rhsSegments) || polygonInsidePolygon(lhs, rhs) || polygonInsidePolygon(rhs, lhs);
 }
