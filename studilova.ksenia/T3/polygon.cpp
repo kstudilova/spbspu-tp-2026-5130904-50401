@@ -15,10 +15,10 @@ namespace
   {
     long long x1 = second.x - first.x;
     long long y1 = second.y - first.y;
-    long long x2 = third.x - second.x;
-    long long y2 = third.y - second.y;
+    long long x2 = third.x - first.x;
+    long long y2 = third.y - first.y;
 
-    return x1 * y2 - y1 * x1;
+    return x1 * y2 - y1 * x2;
   }
 
   bool isBetween(int left, int value, int right)
@@ -263,7 +263,7 @@ bool studilova::segmentsIntersect(const Segment& lhs, const Segment& rhs)
   long long third = getOrientation(rhs.first, rhs.second, lhs.first);
   long long fourth = getOrientation(rhs.first, rhs.second, lhs.second);
 
-  if ((first > 0 && second < 0 || first < 0 && second > 0) && (third > 0 && fourth < 0 || third < 0 && fourth > 0))
+  if (((first > 0 && second < 0) || (first < 0 && second > 0)) && ((third > 0 && fourth < 0) || (third < 0 && fourth > 0)))
   {
     return true;
   }
