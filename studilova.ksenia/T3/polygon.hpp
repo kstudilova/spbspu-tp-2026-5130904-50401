@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstddef>
 
 namespace studilova
 {
@@ -42,6 +43,12 @@ namespace studilova
       std::basic_ios< char >::fmtflags flags_;
       char fill_;
   };
+
+  std::istream& operator>>(std::istream& in, DelimiterIO&& dest);
+  std::istream& operator>>(std::istream& in, Point& dest);
+  std::istream& operator>>(std::istream& in, Polygon& dest);
+
+  void readPoints(std::istream& in, std::vector< Point >& points, size_t count);
 }
 
 #endif
