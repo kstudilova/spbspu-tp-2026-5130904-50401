@@ -57,6 +57,9 @@ namespace studilova
   bool hasEvenVertexes(const Polygon& polygon);
   bool hasOddVertexes(const Polygon& polygon);
   bool hasNVertexes(const Polygon& polygon, size_t count);
+
+  bool areaLess(const Polygon& lhs, const Polygon& rhs);
+  bool vertexesLess(const Polygon& lhs, const Polygon& rhs);
 }
 
 #endif

@@ -1,3 +1,5 @@
+#include "polygon.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -5,8 +7,6 @@
 #include <limits>
 #include <numeric>
 #include <stdexcept>
-
-#include "polygon.hpp"
 
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
   s_(s),
@@ -131,7 +131,11 @@ double studilova::getArea(const Polygon& polygon)
   std::iota(indexes.begin(), indexes.end(), 1);
 
   std::vector< Triangle > triangles(indexes.size());
-  std::transform(indexes.begin(), indexes.end(), triangles.begin(), std::bind(makeTriangle, std::cref(polygon.points), std::placeholders::_1));
+  std::transform(
+    indexes.begin(),
+    indexes.end(), triangles.begin(),
+    std::bind(makeTriangle, std::cref(polygon.points), std::placeholders::_1)
+  );
 
   std::vector< double > areas(triangles.size());
   std::transform(triangles.begin(), triangles.end(), areas.begin(), getTriangleArea);
@@ -152,4 +156,14 @@ bool studilova::hasOddVertexes(const Polygon& polygon)
 bool studilova::hasNVertexes(const Polygon& polygon, size_t count)
 {
   return polygon.points.size() == count;
+}
+
+bool studilova::areaLess(const Polygon& lhs, const Polygon& rhs)
+{
+  return getArea(lhs) < getArea(rhs);
+}
+
+bool studilova::vertexesLess(const Polygon& lhs, const Polygon& rhs)
+{
+  return lhs.points.size() < rhs.points.size();
 }
