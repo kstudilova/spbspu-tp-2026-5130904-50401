@@ -53,6 +53,10 @@ namespace studilova
   Triangle makeTriangle(const std::vector< Point >& points, size_t index);
   double getTriangleArea(const Triangle& triangle);
   double getArea(const Polygon& polygon);
+
+  bool hasEvenVertexes(const Polygon& polygon);
+  bool hasOddVertexes(const Polygon& polygon);
+  bool hasNVertexes(const Polygon& polygon, size_t count);
 }
 
 #endif

@@ -138,3 +138,18 @@ double studilova::getArea(const Polygon& polygon)
 
   return std::accumulate(areas.begin(), areas.end(), 0.0);
 }
+
+bool studilova::hasEvenVertexes(const Polygon& polygon)
+{
+  return polygon.points.size() % 2 == 0;
+}
+
+bool studilova::hasOddVertexes(const Polygon& polygon)
+{
+  return polygon.points.size() % 2 != 0;
+}
+
+bool studilova::hasNVertexes(const Polygon& polygon, size_t count)
+{
+  return polygon.points.size() == count;
+}
