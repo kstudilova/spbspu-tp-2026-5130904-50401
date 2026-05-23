@@ -48,6 +48,8 @@ namespace studilova
   std::istream& operator>>(std::istream& in, Point& dest);
   std::istream& operator>>(std::istream& in, Polygon& dest);
 
+  bool operator==(const Point& lhs, const Point& rhs);
+
   void readPoints(std::istream& in, std::vector< Point >& points, size_t count);
 
   Triangle makeTriangle(const std::vector< Point >& points, size_t index);
@@ -60,6 +62,8 @@ namespace studilova
 
   bool areaLess(const Polygon& lhs, const Polygon& rhs);
   bool vertexesLess(const Polygon& lhs, const Polygon& rhs);
+
+  bool isPermutation(const Polygon& polygon, const Polygon& ref);
 }
 
 #endif

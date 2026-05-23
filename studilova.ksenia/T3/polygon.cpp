@@ -59,6 +59,11 @@ std::istream& studilova::operator>>(std::istream& in, Point& dest)
   return in;
 }
 
+bool studilova::operator==(const Point& lhs, const Point& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
 void studilova::readPoints(std::istream& in, std::vector< studilova::Point >& points, size_t count)
 {
   if (count == 0)
@@ -166,4 +171,13 @@ bool studilova::areaLess(const Polygon& lhs, const Polygon& rhs)
 bool studilova::vertexesLess(const Polygon& lhs, const Polygon& rhs)
 {
   return lhs.points.size() < rhs.points.size();
+}
+
+bool studilova::isPermutation(const Polygon& polygon, const Polygon& ref)
+{
+  if (polygon.points.size() != ref.points.size())
+  {
+    return false;
+  }
+  return std::is_permutation(polygon.points.begin(), polygon.points.end(), ref.points.begin());
 }
