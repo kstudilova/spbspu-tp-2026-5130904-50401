@@ -9,6 +9,31 @@
 #include <stdexcept>
 #include <tuple>
 
+namespace
+{
+  long long getOrientation(const studilova::Point& first, const studilova::Point& second, const studilova::Point& third)
+  {
+    long long x1 = second.x - first.x;
+    long long y1 = second.y - first.y;
+    long long x2 = third.x - second.x;
+    long long y2 = third.y - second.y;
+
+    return x1 * y2 - y1 * x1;
+  }
+
+  bool isBetween(int left, int value, int right)
+  {
+    return std::min(left, right) <= value && value <= std::max(left, right);
+  }
+
+  bool isPointOnSegment(const studilova::Point& point, const studilova::Segment& segment)
+  {
+    return getOrientation(segment.first, point, segment.second) == 0 &&
+      isBetween(segment.first.x, point.x, segment.second.x) &&
+      isBetween(segment.first.y, point.y, segment.second.y);
+  }
+}
+
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
   s_(s),
   width_(s.width()),
@@ -187,3 +212,5 @@ studilova::Segment studilova::makeSegment(const Point& first, const Point& secon
 {
   return Segment{ first, second };
 }
+
+
