@@ -28,7 +28,8 @@ int main(int argc, char* argv[])
   studilova::Command::polygons = &polygons;
   std::vector< studilova::Command > commands;
 
-  std::copy(std::istream_iterator< studilova::Command >{std::cin}, std::istream_iterator< studilova::Command >{}, std::back_inserter(commands));
+  std::copy(std::istream_iterator< studilova::Command >{std::cin}, std::istream_iterator< studilova::Command >{},
+    std::back_inserter(commands));
 
   return 0;
 }
