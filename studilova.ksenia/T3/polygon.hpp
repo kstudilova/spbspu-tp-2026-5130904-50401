@@ -49,6 +49,10 @@ namespace studilova
   std::istream& operator>>(std::istream& in, Polygon& dest);
 
   void readPoints(std::istream& in, std::vector< Point >& points, size_t count);
+
+  Triangle makeTriangle(const std::vector< Point >& points, size_t index);
+  double getTriangleArea(const Triangle& triangle);
+  double getArea(const Polygon& polygon);
 }
 
 #endif

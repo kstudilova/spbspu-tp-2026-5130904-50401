@@ -1,3 +1,11 @@
+#include <algorithm>
+#include <cmath>
+#include <functional>
+#include <iterator>
+#include <limits>
+#include <numeric>
+#include <stdexcept>
+
 #include "polygon.hpp"
 
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
@@ -96,4 +104,37 @@ std::istream& studilova::operator>>(std::istream& in, Polygon& dest)
     in.setstate(std::ios::failbit);
   }
   return in;
+}
+
+studilova::Triangle studilova::makeTriangle(const std::vector< studilova::Point >& points, size_t index)
+{
+  return Triangle{ points[0], points[index], points[index + 1] };
+}
+
+double studilova::getTriangleArea(const studilova::Triangle& triangle)
+{
+  double first = static_cast< double >(triangle.a.x) * (triangle.b.y - triangle.c.y);
+  double second = static_cast< double >(triangle.b.x) * (triangle.c.y - triangle.a.y);
+  double third = static_cast< double >(triangle.c.x) * (triangle.a.y - triangle.b.y);
+
+  return std::fabs(first + second + third) / 2.0;
+}
+
+double studilova::getArea(const Polygon& polygon)
+{
+  if (polygon.points.size() < 3)
+  {
+    throw std::invalid_argument("invalid polygon");
+  }
+
+  std::vector< size_t > indexes(polygon.points.size() - 2);
+  std::iota(indexes.begin(), indexes.end(), 1);
+
+  std::vector< Triangle > triangles(indexes.size());
+  std::transform(indexes.begin(), indexes.end(), triangles.begin(), std::bind(makeTriangle, std::cref(polygon.points), std::placeholders::_1));
+
+  std::vector< double > areas(triangles.size());
+  std::transform(triangles.begin(), triangles.end(), areas.begin(), getTriangleArea);
+
+  return std::accumulate(areas.begin(), areas.end(), 0.0);
 }
