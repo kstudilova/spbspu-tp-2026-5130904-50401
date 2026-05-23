@@ -25,6 +25,12 @@ namespace studilova
     Point c;
   };
 
+  struct Segment
+  {
+    Point first;
+    Point Second;
+  };
+
   struct DelimiterIO
   {
     char exp;
@@ -64,6 +70,8 @@ namespace studilova
   bool vertexesLess(const Polygon& lhs, const Polygon& rhs);
 
   bool isPermutation(const Polygon& polygon, const Polygon& ref);
+
+  Segment makeSegment(const Point& first, const Point& second);
 }
 
 #endif

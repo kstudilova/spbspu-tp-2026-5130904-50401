@@ -7,6 +7,7 @@
 #include <limits>
 #include <numeric>
 #include <stdexcept>
+#include <tuple>
 
 studilova::IOGuard::IOGuard(std::basic_ios< char >& s) :
   s_(s),
@@ -180,4 +181,9 @@ bool studilova::isPermutation(const Polygon& polygon, const Polygon& ref)
     return false;
   }
   return std::is_permutation(polygon.points.begin(), polygon.points.end(), ref.points.begin());
+}
+
+studilova::Segment studilova::makeSegment(const Point& first, const Point& second)
+{
+  return Segment{ first, second };
 }
