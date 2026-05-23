@@ -28,7 +28,7 @@ namespace studilova
   struct Segment
   {
     Point first;
-    Point Second;
+    Point second;
   };
 
   struct DelimiterIO
@@ -72,6 +72,7 @@ namespace studilova
   bool isPermutation(const Polygon& polygon, const Polygon& ref);
 
   Segment makeSegment(const Point& first, const Point& second);
+  bool segmentsIntersect(const Segment& lhs, const Segment& rhs);
 }
 
 #endif

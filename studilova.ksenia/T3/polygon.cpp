@@ -213,4 +213,18 @@ studilova::Segment studilova::makeSegment(const Point& first, const Point& secon
   return Segment{ first, second };
 }
 
+bool studilova::segmentsIntersect(const Segment& lhs, const Segment& rhs)
+{
+  long long first = getOrientation(lhs.first, lhs.second, rhs.first);
+  long long second = getOrientation(lhs.first, lhs.second, rhs.second);
+  long long third = getOrientation(rhs.first, rhs.second, lhs.first);
+  long long fourth = getOrientation(rhs.first, rhs.second, lhs.second);
 
+  if ((first > 0 && second < 0 || first < 0 && second > 0) && (third > 0 && fourth < 0 || third < 0 && fourth > 0))
+  {
+    return true;
+  }
+
+  return isPointOnSegment(rhs.first, lhs) || isPointOnSegment(rhs.second, lhs) ||
+    isPointOnSegment(lhs.first, rhs) || isPointOnSegment(lhs.second, rhs);
+}
