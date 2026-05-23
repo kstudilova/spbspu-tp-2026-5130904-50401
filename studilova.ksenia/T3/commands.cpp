@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <iterator>
 #include <iomanip>
 #include <numeric>
 #include <stdexcept>
@@ -63,6 +64,33 @@ void studilova::area(std::istream& in, std::ostream& out, const std::vector< Pol
   }
 
   out << std::fixed << std::setprecision(1) << result << '\n';
+}
+
+void studilova::max(std::istream& in, std::ostream& out, const std::vector< Polygon >& polygons)
+{
+  if (polygons.empty())
+  {
+    throw std::invalid_argument("invalid command");
+  }
+
+  std::string arg;
+  if (!(in >> arg))
+  {
+    throw std::invalid_argument("invalid command");
+  }
+
+  if (arg == "AREA")
+  {
+    auto result = std::max_element(polygons.begin(), polygons.end(), areaLess);
+    out << std::fixed << std::setprecision(1) << getArea(*result) << '\n';
+  }
+  else if (arg == "VERTEXES")
+  {
+    auto result = std::max_element(polygons.begin(), polygons.end(), vertexesLess);
+    out << result->points.size() << '\n';
+  } else {
+    throw std::invalid_argument("invalid command");
+  }
 }
 
 void studilova::count(std::istream& in, std::ostream& out, const std::vector< studilova::Polygon >& polygons)
