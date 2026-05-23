@@ -245,3 +245,22 @@ bool studilova::segmentsIntersect(const Segment& lhs, const Segment& rhs)
   return isPointOnSegment(rhs.first, lhs) || isPointOnSegment(rhs.second, lhs) ||
     isPointOnSegment(lhs.first, rhs) || isPointOnSegment(lhs.second, rhs);
 }
+
+bool studilova::polygonsIntersect(const Polygon& lhs, const Polygon& rhs)
+{
+  std::vector< size_t > lhsIndexes(lhs.points.size());
+  std::iota(lhsIndexes.begin(), lhsIndexes.end(), 0);
+
+  std::vector< size_t > rhsIndexes(rhs.points.size());
+  std::iota(rhsIndexes.begin(), rhsIndexes.end(), 0);
+
+  std::vector< Segment > lhsSegments(lhsIndexes.size());
+  std::transform(lhsIndexes.begin(), lhsIndexes.end(), lhsSegments.begin(),
+    std::bind(makeSegmentByIndex, std::cref(lhs), std::placeholders::_1));
+
+  std::vector< Segment > rhsSegments(rhsIndexes.size());
+  std::transform(rhsIndexes.begin(), rhsIndexes.end(), rhsSegments.begin(),
+    std::bind(makeSegmentByIndex, std::cref(rhs), std::placeholders::_1));
+
+  return hasIntersections(lhsSegments, rhsSegments);
+}
